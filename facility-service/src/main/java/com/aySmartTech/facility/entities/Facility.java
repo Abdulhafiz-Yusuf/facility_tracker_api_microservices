@@ -1,0 +1,102 @@
+package com.aySmartTech.facility.entities;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+
+import com.aySmartTech.facility.FacilityStatus;
+import com.aySmartTech.facility.FacilityType;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.Set;
+
+@Getter
+@Setter
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "facility")
+public class Facility extends BaseEntity{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "customer_id", nullable = false)
+    private Long customerId;
+
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "facility_type", nullable = false, length = 20)
+    private FacilityType facilityType;
+
+
+    @Column(name = "principal", nullable = false, precision = 15, scale = 2)
+    private BigDecimal principal;
+
+
+    @Column(name = "profit_rate", nullable = false, precision = 5, scale = 2)
+    private BigDecimal profitRate;
+
+
+    @ColumnDefault("PENDING")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 20)
+    private FacilityStatus status;
+
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
+    // Legal transitions map: current status -> set of statuses it may move to
+    private static final Map<FacilityStatus, Set<FacilityStatus>> ALLOWED_TRANSITIONS = Map.of(
+            FacilityStatus.PENDING, Set.of(FacilityStatus.APPROVED, FacilityStatus.REJECTED),
+            FacilityStatus.APPROVED, Set.of(FacilityStatus.ACTIVE),
+            FacilityStatus.ACTIVE, Set.of(FacilityStatus.CLOSED),
+            FacilityStatus.CLOSED, Set.of(),
+            FacilityStatus.REJECTED, Set.of()
+    );
+
+    public void transitionTo(FacilityStatus newStatus){
+        Set<FacilityStatus> allowed = ALLOWED_TRANSITIONS.get(this.status);
+        if(allowed == null || !allowed.contains(newStatus)) {
+            throw new IllegalStateException(
+                    "Cannot transition facility from " + this.status + " to " + newStatus
+            );
+        }
+        this.status = newStatus;
+        if(newStatus == FacilityStatus.ACTIVE && this.startDate == null){
+            this.startDate = LocalDate.now();
+        }
+
+    }
+
+    @PrePersist
+    protected  void onCreate(){
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+
+        if(this.status == null)
+            this.status = FacilityStatus.PENDING;
+    }
+
+    @PreUpdate
+    protected void onUpdate(){
+        this.updatedAt = LocalDateTime.now();
+    }
+}
