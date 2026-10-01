@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes[0]:
+        id: facility-service
+        uri: lb://FACILITY-SERVICE
+        predicates[0]: Path=/api/loans/**
+      routes[1]:
+        uri: lb://PAYMENT-SERVICE
+        id: payment-service
+        predicates[0]: Path=/api/payments/**
+      routes[2]:
+        uri: lb://CUSTOMER-SERVICE
+        id: customer-service
+        predicates[0]: Path=/api/payments/**
+
+
+server:
+  port: 8080
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
