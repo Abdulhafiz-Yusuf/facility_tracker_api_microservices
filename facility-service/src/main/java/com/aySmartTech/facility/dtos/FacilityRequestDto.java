@@ -1,28 +1,29 @@
 package com.aySmartTech.facility.dtos;
 
-import com.aySmartTech.facility.FacilityType;
-import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import lombok.Value;
 
 import java.math.BigDecimal;
+
+import com.aySmartTech.facility.entities.FacilityType;
 
 /**
  * DTO for {@link com.aySmartTech.facility}
  */
 @Value
 public class FacilityRequestDto {
-    @NotNull(message = "Customer ID is required")
-    Long customerId;
+    @NotBlank(message = "accountNumber can not be empty")
+    @Pattern(regexp = "\\d{10}", message = "accountNumber must be 10 digits")
+    private String accountNumber;
 
     @NotNull(message = "Facility type is required")
-    FacilityType facilityType;
+    private FacilityType facilityType;
 
-    @NotNull(message = "Principal is required")
-    @DecimalMin(value = "0.01", message = "Principal must be greater than zero")
-    BigDecimal principal;
 
-    @NotNull(message = "Profit rate is required")
-    @DecimalMin(value = "0.0", message = "Profit rate cannot be negative")
-    BigDecimal profitRate;
+    @Positive(message = "principalAmount must be greater than zero")
+    private BigDecimal principalAmount;
+
 }

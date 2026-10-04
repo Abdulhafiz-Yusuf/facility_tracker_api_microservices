@@ -17,6 +17,6 @@
         <module>api-gateway</module>
         <module>facility-service</module>
         <module>payment-service</module>
-        <module>customer-service</module>
+<!--        <module>user-service</module>-->
     </modules>
 </project>

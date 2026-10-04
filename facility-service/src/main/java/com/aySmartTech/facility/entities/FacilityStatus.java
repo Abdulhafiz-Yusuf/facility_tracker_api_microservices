@@ -1,4 +1,4 @@
-package com.aySmartTech.facility;
+package com.aySmartTech.facility.entities;
 
 public enum FacilityStatus {
     PENDING,

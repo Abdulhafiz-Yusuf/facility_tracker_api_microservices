@@ -20,8 +20,11 @@ public class Payment extends BaseEntity{
     @Column(name = "facility_id", nullable = false)
     private Long facilityId;
 
-    @Column(name = "amount_paid", nullable = false, precision = 15, scale = 2)
+    @Column(name = "amount_paid", nullable = false)
     private BigDecimal amountPaid;
+
+    @Column(name = "payment_number", nullable = false)
+    private String paymentNumber;
 
     @Column(name = "payment_date", nullable = false)
     private LocalDate paymentDate;

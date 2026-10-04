@@ -1,0 +1,14 @@
+@baseUrl = http://localhost:8081
+
+### Get all facilities
+GET {{baseUrl}}/api/facilities
+
+### Create a facility
+POST {{baseUrl}}/api/facilities
+Content-Type: application/json
+
+{
+  "accountNumber": "012346798",
+  "facilityType": "MURABAHA",
+  "principalAmount": "500000.00"
+}

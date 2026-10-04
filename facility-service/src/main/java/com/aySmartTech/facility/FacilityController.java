@@ -3,6 +3,8 @@ package com.aySmartTech.facility;
 import com.aySmartTech.facility.dtos.FacilityRequestDto;
 import com.aySmartTech.facility.dtos.FacilityResponseDto;
 import com.aySmartTech.facility.dtos.FacilityStatusUpdateRequestDto;
+import com.aySmartTech.facility.service.FacilityServiceImpl;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,10 +16,10 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/facilities")
+@RequestMapping("/api/facilities")
 class FacilityController {
 
-    private final FacilityService service;
+    private final FacilityServiceImpl service;
 
 //    @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping
@@ -48,11 +50,11 @@ class FacilityController {
 //    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     @GetMapping
     public ResponseEntity<List<FacilityResponseDto>> getFacilities(
-            @Valid @RequestParam(required = false) Long customerId
+            @Valid @RequestParam(required = false) String accountNumber
     ){
-    if(customerId !=  null){
+    if(accountNumber !=  null){
         return ResponseEntity.status(HttpStatus.OK)
-                .body(service.getFacilitiesByCustomer(customerId));
+                .body(service.getFacilitiesByAccount(accountNumber));
     }
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.getAllFacilities());

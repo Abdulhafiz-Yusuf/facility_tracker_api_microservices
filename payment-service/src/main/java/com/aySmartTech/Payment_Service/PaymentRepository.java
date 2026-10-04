@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.aySmartTech.Payment_Service.entities.Payment;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -28,5 +30,12 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     """)
     BigDecimal sumAmountPaid(@Param("facilityId") Long facilityId);
 
+
+    @Query ("""
+        SELECT p
+        FROM Payment p
+        WHERE p.facilityId = :facilityId
+        """)
+    List<Payment> findAllByFacilityId(@Param("facilityId") Long facilityId);
 
 }

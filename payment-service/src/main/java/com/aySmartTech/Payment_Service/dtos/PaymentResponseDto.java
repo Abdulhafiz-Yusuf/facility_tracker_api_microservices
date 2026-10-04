@@ -10,7 +10,7 @@ public record PaymentResponseDto(
         Long paymentId,
         Long facilityId,
         BigDecimal amountPaid,
-        BigDecimal OutstandingBalance,
+        BigDecimal totalAmountPaid,
+        BigDecimal outstandingBalance,
         LocalDate paymentDate
-//        FacilityStatu facilityStatus
 )  {}

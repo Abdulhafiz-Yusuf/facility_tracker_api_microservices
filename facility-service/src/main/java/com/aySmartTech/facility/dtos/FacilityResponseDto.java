@@ -1,7 +1,7 @@
 package com.aySmartTech.facility.dtos;
 
-import com.aySmartTech.facility.FacilityStatus;
-import com.aySmartTech.facility.FacilityType;
+import com.aySmartTech.facility.entities.FacilityStatus;
+import com.aySmartTech.facility.entities.FacilityType;
 
 import lombok.Value;
 
@@ -13,11 +13,14 @@ import java.time.LocalDateTime;
  */
 @Value
 public class FacilityResponseDto {
-    Long id;
-    Long customerId;
-    FacilityType facilityType;
-    BigDecimal principal;
-    BigDecimal profitRate;
-    FacilityStatus status;
-    LocalDateTime createdAt;
+    private Long facilityId;
+    private FacilityType facilityType;
+    private BigDecimal principalAmount;
+    private Double profitRate;
+    private FacilityStatus status;
+    private String accountNumber;
+    private String facilityNumber;
+    private BigDecimal totalAmountPaid;
+    private BigDecimal outstandingAmount;
+    private LocalDateTime createdAt;
 }

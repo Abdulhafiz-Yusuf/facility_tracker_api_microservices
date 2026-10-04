@@ -1,7 +1,8 @@
 package com.aySmartTech.facility.dtos;
 
 
-import com.aySmartTech.facility.FacilityStatus;
+import com.aySmartTech.facility.entities.FacilityStatus;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.Value;
 
